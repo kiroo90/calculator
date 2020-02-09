@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+}
+#border{
+    margin: auto;
+    border: 5px solid rgb(0, 0, 0);
+    width: 200px;
+}
+#displayBox {
+    border: 1px solid gray;
+}
+#answer {
+    font-size: 30px;
+    height: 40px;
+}
+#answer2 {
+    font-size: 12px;
+    height: auto;
+}
+p {
+    margin: 0;
+    text-align: right;
+    width: 197px;
+    word-break: break-all;
+}
+button {
+    width: 51px;
+    height: 31px;
+    text-align: center;
+    margin-right: -7px;
+}
+#buttons{
+    width: 200px;
+}
+#zero {
+    width: 101px;
+}
+#clean {
+    width: 150px;
+}
