@@ -15,8 +15,11 @@ const equal = el("#equal");
 let equalControl = false;
 let historyControl = false;
 let control = false;
-let newNum = "";
+let last = false;
 let oldNum = "";
+let decimal = false;
+let lastNum = "";
+let lastNum2 = "";
 let toolValue;
 
 
@@ -70,16 +73,23 @@ function buttonClick(){  //numberClick 함수
             history.innerHTML = "";
             historyControl = true;
         }
+        if(decimal){
+            lastNum = "";
+            lastNum2 = "";
+            decimal = false;
+        }
         answer.innerHTML += buttonValue;
         history.innerHTML += buttonValue;
-        newNum = answer.innerHTML;
-        equalControl = false;
+        oldNum = answer.innerHTML;
+        lastNum = lastNum + buttonValue;
+        equalControl = false;     
 }
 
 function toolClick(){  //operatorClick 함수
     toolValue = this.getAttribute("value");
-    oldNum = answer.innerHTML;
-    newNum = "";
+    last = false;
+    lastNum = lastNum + toolValue;
+    decimal = false;
     if(control){
         answer.innerHTML = "";
     } 
@@ -89,66 +99,88 @@ function toolClick(){  //operatorClick 함수
 function  equalClick(){ //equalButton Click 함수
     equalValue = this.getAttribute("value");
     oldNum = parseFloat(oldNum);
-    newNum = parseFloat(newNum);
     fixed = "";
+    decimal = true;
+    if(isNaN(lastNum)){
+        answer.innerHTML = "Error";
+        history.innerHTML = "Error";
+    }
     switch (toolValue) {
         case "+":
-            fixed = oldNum + newNum;
-            fixedAnswer = test(fixed);
-            answer.innerHTML = fixedAnswer;
-            if(isNaN(fixedAnswer)){
-                answer.innerHTML = "Error";
-            }
-            oldNum = answer.innerHTML;
+            if(!last){
+                fixed = lastNum;
+                lastNum2 = test(eval(fixed));
+                lastNum2 = parseFloat(lastNum2);
+                answer.innerHTML = lastNum2;
+                last = true;
+            }   else if(last) {
+                    lastNum2 = parseFloat(lastNum2);
+                    fixed = lastNum2 + oldNum;
+                    lastNum2 = test(eval(fixed));
+                    answer.innerHTML = lastNum2;
+                    lastNum = lastNum2;
+                }
             control = false;
             break;
         case "-":
-            fixed = oldNum - newNum;
-            fixedAnswer = test(fixed);
-            answer.innerHTML = fixedAnswer;
-            if(isNaN(fixedAnswer)){
-                answer.innerHTML = "Error";
-            }
-            oldNum = answer.innerHTML;
+            if(!last){
+                fixed = lastNum;
+                lastNum2 = test(eval(fixed));
+                lastNum2 = parseFloat(lastNum2);
+                answer.innerHTML = lastNum2;
+                last = true
+            }   else if(last) {
+                    lastNum2 = parseFloat(lastNum2);
+                    fixed = lastNum2 - oldNum;
+                    lastNum2 = test(eval(fixed));
+                    answer.innerHTML = lastNum2;
+                    lastNum = lastNum2;
+                }
             control = false;
             break;
         case "*":
-            fixed = oldNum * newNum;
-            fixedAnswer = test(fixed);
-            answer.innerHTML = fixedAnswer;
-            if(isNaN(fixedAnswer)){
-                answer.innerHTML = "Error";
-            }
-            oldNum = answer.innerHTML;
+            if(!last){
+                fixed = lastNum;
+                lastNum2 = test(eval(fixed));
+                lastNum2 = parseFloat(lastNum2);
+                answer.innerHTML = lastNum2;
+                last = true
+            }   else if(last) {
+                    lastNum2 = parseFloat(lastNum2);
+                    fixed = lastNum2 * oldNum;
+                    lastNum2 = test(eval(fixed));
+                    answer.innerHTML = lastNum2;
+                    lastNum = lastNum2;
+                }
             control = false;
             break;
         case "/":
-            fixed = oldNum / newNum;
-            fixedAnswer = test(fixed);
-            answer.innerHTML = fixedAnswer;
-            if(isNaN(fixedAnswer)){
-                answer.innerHTML = "Error";
-            }
-            oldNum = answer.innerHTML;
+            if(!last){
+                fixed = lastNum;
+                lastNum2 = test(eval(fixed));
+                lastNum2 = parseFloat(lastNum2);
+                answer.innerHTML = lastNum2;
+                last = true
+            }   else if(last) {
+                    lastNum2 = parseFloat(lastNum2);
+                    fixed = lastNum2 / oldNum;
+                    lastNum2 = test(eval(fixed));
+                    answer.innerHTML = lastNum2;
+                    lastNum = lastNum2;
+                }
             control = false;
-            break;                          
+            break;
         default:
-            answer.innerHTML = "Error";
+            answer.innerHTML = "Error!!!!";
     }
-
-    if(!equalControl){
-        history.innerHTML += `${equalValue}${answer.innerHTML}`; 
-        equalControl = true; 
-    } else if (equalControl) {
-        history.innerHTML += `${toolValue}${answer.innerHTML}`;  
-    }
-
+    return history.innerHTML = `${answer.innerHTML}`   
 }
 
 
 function claenButton() {
     oldNum = "";
-    newNum = "";
+    lastNum2 ="";
+    lastNum = "";
     answer.innerHTML = "0";
     history.innerHTML = "0";
     control = false;
